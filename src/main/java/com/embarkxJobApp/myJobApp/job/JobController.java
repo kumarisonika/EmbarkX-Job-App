@@ -1,5 +1,8 @@
 package com.embarkxJobApp.myJobApp.job;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -14,19 +17,35 @@ public class JobController {
         this.jobService = jobService;
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public List<Job> findAll(){
         return jobService.findAll();
     }
 
     @PostMapping()
-    public String createJob(@RequestBody Job job){
+    public ResponseEntity<String> createJob(@RequestBody Job job){
         jobService.createJob(job);
-        return "Job added successfully";
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public Job getJobById(@PathVariable Long id){
-        return jobService.getJobById(id);
+    public ResponseEntity<Job> getJobById(@PathVariable Long id){
+        if(jobService.getJobById(id)!=null){
+            return new ResponseEntity<>(jobService.getJobById(id), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
     }
+
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Boolean> deleteJobById(@PathVariable Long id){
+        if(jobService.deleteJobById(id)!=false){
+            return new ResponseEntity<>(jobService.deleteJobById(id), HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+    }
+
 }
