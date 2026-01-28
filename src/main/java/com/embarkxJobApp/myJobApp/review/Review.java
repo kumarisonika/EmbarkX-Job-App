@@ -6,17 +6,21 @@ import jakarta.persistence.*;
 
 @Entity
 public class Review {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String title;
     private String description;
     private double rating;
 
     @JsonIgnore
     @ManyToOne
+    @JoinColumn(name = "company_id")
     private Company company;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     public Long getId() {
         return id;
     }

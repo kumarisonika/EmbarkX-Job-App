@@ -1,6 +1,7 @@
 package com.embarkxJobApp.myJobApp.job;
 
 import com.embarkxJobApp.myJobApp.company.Company;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -15,8 +16,10 @@ public class Job {
     private int minSalary;
     private int maxSalary;
     private String location;
+
     @ManyToOne
     @JoinColumn(name = "company_id")
+    @JsonBackReference
     private Company company;
 
     public Job() {
